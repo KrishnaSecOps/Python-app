@@ -1,25 +1,18 @@
-import os
-from kubernetes import client, config
+from flask import Flask, request
+import socket
 
-def get_node_ip(node_name):
-    config.load_incluster_config()
-    v1 = client.CoreV1Api()
+app = Flask(__name__)
 
-    node = v1.read_node(node_name)
-    for address in node.status.addresses:
-        if address.type == "InternalIP":
-            return address.address
-    return "Unknown"
+@app.route("/")
+def home():
+    hostname = socket.gethostname()
+    server_ip = socket.gethostbyname(hostname)
+    client_ip = request.remote_addr
 
-def main():
-    pod_name = os.getenv("POD_NAME", "Unknown")
-    node_name = os.getenv("NODE_NAME", "Unknown")
-
-    node_ip = get_node_ip(node_name)
-
-    print(f"Pod Name  : {pod_name}")
-    print(f"Node Name : {node_name}")
-    print(f"Node IP   : {node_ip}")
+    return f"""
+    <h1>Server IP: {server_ip}</h1>
+    <h1>Client IP: {client_ip}</h1>
+    """
 
 if __name__ == "__main__":
-    main()
+    app.run(host="0.0.0.0", port=8080)

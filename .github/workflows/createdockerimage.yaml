@@ -18,18 +18,18 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y docker.io
-          docker --version
+          sudo docker --version
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ env.IMAGE }}:latest .
-          docker images
+          sudo docker build -t ${{ env.IMAGE }}:latest .
+          sudo docker images
 
       - name: Log in to Docker Hub
         run: |
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+          sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Push Docker image
         run: |
-          docker tag ${{ env.IMAGE }}:latest ${{ env.IMAGE }}:${{ github.sha }}
-          docker push ${{ env.IMAGE }}:latest
+          sudo docker tag ${{ env.IMAGE }}:latest ${{ env.IMAGE }}:${{ github.sha }}
+          sudo docker push ${{ env.IMAGE }}:latest

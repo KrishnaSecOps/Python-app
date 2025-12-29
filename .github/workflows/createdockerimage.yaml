@@ -1,0 +1,35 @@
+name: Build and push Docker image
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO_NAME }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Build
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y docker.io
+          docker --version
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ env.IMAGE }}:latest .
+          docker images
+
+      - name: Log in to Docker Hub
+        run: |
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Push Docker image
+        run: |
+          docker tag ${{ env.IMAGE }}:latest ${{ env.IMAGE }}:${{ github.sha }}
+          docker push ${{ env.IMAGE }}:latest

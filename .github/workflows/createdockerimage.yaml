@@ -15,10 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Docker Build
-        run: |
-          sudo apt update -y
-          sudo apt install -y docker.io
-          sudo docker --version
+        run: ./installdocker.sh
 
       - name: Build Docker image
         run: |

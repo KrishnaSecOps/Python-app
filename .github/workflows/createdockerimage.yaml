@@ -19,7 +19,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          sudo docker build -t ${{ env.IMAGE }}:latest .
+          sudo docker build -t ${{ env.IMAGE }}:1.0 .
           sudo docker images
 
       - name: Log in to Docker Hub
@@ -28,5 +28,5 @@ jobs:
 
       - name: Push Docker image
         run: |
-          sudo docker tag ${{ env.IMAGE }}:latest ${{ env.IMAGE }}:${{ github.sha }}
-          sudo docker push ${{ env.IMAGE }}:latest
+          sudo docker tag ${{ env.IMAGE }}:1.0 ${{ env.IMAGE }}:${{ github.sha }}
+          sudo docker push ${{ env.IMAGE }}:1.0

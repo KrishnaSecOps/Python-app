@@ -1,9 +1,6 @@
 name: Build and push Docker image
-
 on:
-  push:
-    branches: [ main ]
-
+  push
 env:
   IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO_NAME }}
 
